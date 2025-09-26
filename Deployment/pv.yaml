@@ -9,5 +9,5 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: /mnt/data/mysql       # Local path inside Minikube VM
+    path: /mnt/data/mysql     
   persistentVolumeReclaimPolicy: Retain
