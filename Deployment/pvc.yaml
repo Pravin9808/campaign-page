@@ -8,5 +8,5 @@ spec:
   resources:
     requests:
       storage: 5Gi
-  volumeName: mysql-pv          # Bind to the PV explicitly
+  volumeName: mysql-pv        
   storageClassName: standard
