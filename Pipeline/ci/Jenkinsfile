@@ -29,9 +29,9 @@ pipeline {
                     ${scannerHome}/bin/sonar-scanner\
                             -Dsonar.projectKey=campaign-page \
                             -Dsonar.sources=. \
-                            -Dsonar.host.url= http://host.docker.internal:9001 \
                             -Dsonar.login=${SONARQUBE_AUTH_TOKEN}
             """
+             // -Dsonar.host.url= http://host.docker.internal:9001 \
                     }
                 }
             }
