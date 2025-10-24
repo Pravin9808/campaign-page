@@ -26,7 +26,7 @@ pipeline {
                     script {
                     def scannerHome = tool 'sonar-scanner'
                     sh """
-                    ${scannerHome}/bin/sonar-scanner
+                    ${scannerHome}/bin/sonar-scanner\
                             -Dsonar.projectKey=campaign-page \
                             -Dsonar.sources=. \
                             -Dsonar.host.url= http://host.docker.internal:9001 \
