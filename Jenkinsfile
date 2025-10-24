@@ -43,9 +43,10 @@ pipeline {
                 def commitHash = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
                 def imageTag= commitHash
                 def imagenameTag="pravindevopsch/campaign:${imageTag}"
-                docker.withRegistry('https://index.docker.io/v1/', "${DOCKERHUB_CREDENTIALS}") {
-                    def appImage = docker.build(imagenameTag)
-                    appImage.push()
+                echo imagenameTag
+                // docker.withRegistry('https://index.docker.io/v1/', "${DOCKERHUB_CREDENTIALS}") {
+                //     def appImage = docker.build(imagenameTag)
+                //     appImage.push()
                 }
                 env.commitHash=commithash
                 }
