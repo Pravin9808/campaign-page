@@ -44,7 +44,7 @@ pipeline {
                 def imageTag= commitHash
                 def imagenameTag="pravindevopsch/campaign:${imageTag}"
                 echo imagenameTag
-                withDockerRegistry(credentialsId: "${DOCKERHUB_CREDENTIALS}", toolName: 'docker') {
+                withDockerRegistry(credentialsId: "${DOCKERHUB_CREDENTIALS}") {
                     sh '''
                     docker build -t ${imagenameTag} .
                     docker push ${imagenameTag}
