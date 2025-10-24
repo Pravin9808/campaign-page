@@ -49,7 +49,7 @@ pipeline {
             }
         }
 
-        stage(Trivy Scan File System){
+        stage('Trivy Scan File System'){
             steps{
                 sh '''
                 trivy image --format table -o trivy-image-report.html pravindevopsch/campaign:${imageTag}
