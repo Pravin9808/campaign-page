@@ -49,7 +49,7 @@ pipeline {
                 //     appImage.push()
                 }
                 env.commitHash=commithash
-                }
+                // }
             }
         }
 
