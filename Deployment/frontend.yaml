@@ -15,6 +15,11 @@ spec:
       containers:
         - name: frontend
           image: pravindevopsch/campaign:1.0
+          resources:
+            requests:
+              cpu: "100m"
+            limits:
+              cpu: "500m"
           env:
             - name: MYSQL_HOST
               value: mysql
