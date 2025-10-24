@@ -48,7 +48,7 @@ pipeline {
                 //     def appImage = docker.build(imagenameTag)
                 //     appImage.push()
                 }
-                env.commitHash=commithash
+                // env.commitHash=commithash
                 // }
             }
         }
