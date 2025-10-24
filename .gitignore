@@ -9,7 +9,12 @@
 !.yarn/plugins
 !.yarn/releases
 !.yarn/versions
-
+Readme.md
+csr.yaml
+*.crt
+*.csr
+*.key
+kubeconfig-local
 # testing
 /coverage
 

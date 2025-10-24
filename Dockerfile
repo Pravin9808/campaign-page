@@ -1,19 +1,19 @@
 #---- Base image for deps ----
-FROM node:20-bullseye-slim AS deps
+FROM node:slim AS deps
 WORKDIR /app
 COPY package*.json ./
 # install dependencies with frozen lockfile for reproducible builds
 RUN npm ci --legacy-peer-deps
 
 # ---- Build stage ----
-FROM node:20-bullseye-slim AS builder
+FROM node:slim AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN npm run build
 
 # ---- Production stage ----
-FROM node:20-bullseye-slim AS runner
+FROM node:slim AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 
