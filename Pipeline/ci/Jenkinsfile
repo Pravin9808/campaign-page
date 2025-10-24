@@ -23,13 +23,16 @@ pipeline {
         stage('Code Analysis') {
             steps {
                 withSonarQubeEnv('SonarQube') {
-                    sh '''
-                        sonar-scanner \
+                    script {
+                    def scannerHome = tool 'sonar-scanner'
+                    sh """
+                    ${scannerHome}/bin/sonar-scanner
                             -Dsonar.projectKey=campaign-page \
                             -Dsonar.sources=. \
                             -Dsonar.host.url= http://host.docker.internal:9001 \
                             -Dsonar.login=${SONARQUBE_AUTH_TOKEN}
-            '''
+            """
+                    }
                 }
             }
         }
