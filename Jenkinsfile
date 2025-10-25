@@ -53,7 +53,7 @@ pipeline {
                     def appImage = docker.build(imagenameTag)
                     appImage.push()
                 }
-                env.IMAGE_TAG= imagenameTag
+                // env.IMAGE_TAG= imagenameTag
                 env.COMMIT_HASH=commitHash
                 }
             }
@@ -62,7 +62,7 @@ pipeline {
         stage('Trivy Scan File System'){
             steps{
                 sh '''
-                trivy image --format table -o trivy-image-report.html ${IMAGE_TAG}
+                trivy image --format table -o trivy-image-report.html pravindevopsch/campaign:${imageTag}
                 '''
             }
         }
