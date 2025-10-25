@@ -4,7 +4,7 @@ metadata:
   name: apptest  #application name
 spec:
   destination:
-    name: 'https://kubernetes.default.svc'  # aws cluster name
+    server: 'https://kubernetes.default.svc'  # aws cluster name
     namespace: argocd
   source:
     path: Deployment # deployment yaml file folder path in git
