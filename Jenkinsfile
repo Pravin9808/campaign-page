@@ -14,7 +14,7 @@ pipeline {
             steps {
                 checkout([
                     $class: 'GitSCM',
-                    branches: [[name: '*/main']],
+                    branches: [[name: '*/master']],
                     userRemoteConfigs: [[url: "${REPO_URL}", credentialsId: "${GITHUB_CREDENTIALS}"]]
                 ])
             }
@@ -64,7 +64,51 @@ pipeline {
                 sh '''
                 trivy image --format table -o trivy-image-report.html ${IMAGE_TAG}
                 '''
+                 publishHTML([
+                    reportDir: '.',
+                    reportFiles: 'trivy-image-report.html',
+                    reportName: 'Trivy Image Scan Report'
+                ])
             }
+        }
+
+        stage("Update image tag in k8s deployment file"){
+            steps{
+                script{
+                    // sh ''' git checkout master '''
+                    //     sh '''
+                    //     sed -i "s#image: .*#image: ${IMAGE_TAG}#g" Deployment/frontend.yaml
+                    //     cat Deployment/frontend.yaml
+                    //     '''
+                      withCredentials([usernamePassword(credentialsId: GITHUB_CREDENTIALS, gitToolName: 'Default')]) {
+                        sh '''
+                        git checkout master
+                        '''
+
+                        # Update the image tag in the frontend deployment file
+                        sed -i "s#image: .*#image: ${IMAGE_TAG}#g" Deployment/frontend.yaml
+
+                        # Show the updated YAML for verification
+                        cat Deployment/frontend.yaml
+                        
+                        sh '''
+                        git config user.email "pravink891@gmail.com"
+                        git config user.name "Pravin9808"
+                        git add Deployment/frontend.yaml
+                        git commit -m "Update frontend image to ${IMAGE_TAG}"
+                        git push origin master
+                        '''
+                
+                      }
+                }
+            }
+                
+            }
+
+    }
+    post {
+        always {
+            cleanWs()
         }
     }
 }
