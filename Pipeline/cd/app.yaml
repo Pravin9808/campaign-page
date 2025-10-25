@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: apptest  #application name
+spec:
+  destination:
+    name: 'aws-uat'  # aws cluster name
+    namespace: test-ns
+  source:
+    path: Deployment # deployment yaml file folder path in git
+    repoURL: 'https://github.com/Pravin9808/campaign-page.git'  #git repo url 
+    targetRevision: main  # branch name
+    # helm:
+    #   valueFiles:
+    #     - values.yaml
+  sources: []
+  project: test-uat  # argocd project 
+  syncPolicy:
+    automated:  # enable auto sync
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true # this will create namespace if not exists
+      - PruneLast=true
+      - PrunePropagationPolicy=foreground
