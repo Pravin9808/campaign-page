@@ -4,8 +4,8 @@ metadata:
   name: apptest  #application name
 spec:
   destination:
-    name: 'aws-uat'  # aws cluster name
-    namespace: test-ns
+    name: 'https://kubernetes.default.svc'  # aws cluster name
+    namespace: argocd
   source:
     path: Deployment # deployment yaml file folder path in git
     repoURL: 'https://github.com/Pravin9808/campaign-page.git'  #git repo url 
@@ -14,7 +14,7 @@ spec:
     #   valueFiles:
     #     - values.yaml
   sources: []
-  project: test-uat  # argocd project 
+  project: default  # argocd project 
   syncPolicy:
     automated:  # enable auto sync
       prune: true
