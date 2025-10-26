@@ -89,7 +89,7 @@ jobs:
           NEW_IMAGE="${REGISTRY}/${GITHUB_REPOSITORY}:${IMAGE_TAG}"
           
           # Update the deployment file directly
-          sed -i "s|image: ${REGISTRY}/.*|image: ${NEW_IMAGE}|g" Deployment/frontend.yaml
+          # sed -i "s|image: ${REGISTRY}/.*|image: ${NEW_IMAGE}|g" Deployment/frontend.yaml
           sed -i "s#image: .*\$#image: ${{ secrets.DOCKER_USERNAME }}/campaign:${{ github.sha }}#g" Deployment/frontend.yaml
           
           # Verify the change
