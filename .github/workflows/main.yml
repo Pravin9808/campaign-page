@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+    paths-ignore:
+      - 'Deployment/frontend.yaml'
   pull_request:
     branches:
       - main
@@ -47,7 +49,17 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/myapp:${{ github.sha }} .
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/campaign:${{ github.sha }} .
+
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ secrets.DOCKER_USERNAME }}/campaign:${{ github.sha }}
+          format: 'table'
+          exit-code: '1'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
 
       - name: Push Docker image
         run: |
@@ -59,8 +71,8 @@ jobs:
 
       - name: Commit updated frontend.yaml
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          it config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
           git add Deployment/frontend.yaml
           git commit -m "Update image tag to ${{ github.sha }}"
           git push
