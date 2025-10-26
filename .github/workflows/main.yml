@@ -64,40 +64,40 @@ jobs:
       - name: Push Docker image
         run: |
           docker push ${{ secrets.DOCKER_USERNAME }}/campaign:${{ github.sha }}
-
-      - name: Update Kubernetes deployment file
+  update-k8s:
+    name: Update Kubernetes Deployment
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.TOKEN }}
+      
+      - name: Setup Git config
         run: |
-          sed -i "s#image: .*\$#image: ${{ secrets.DOCKER_USERNAME }}/campaign:${{ github.sha }}#g" Deployment/frontend.yaml
-
-      - name: Commit updated frontend.yaml
-        run: |
-          it config user.name "GitHub Actions"
+          git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
-          git add Deployment/frontend.yaml
-          git commit -m "Update image tag to ${{ github.sha }}"
-          git push
+      
+      - name: Update Kubernetes deployment file
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  # --- 3️⃣ (OPTIONAL) APPLY CHANGES TO CLUSTER ---
-  # deploy:
-  #   runs-on: ubuntu-latest
-  #   needs: docker-build
-  #   steps:
-  #     - name: Checkout code
-  #       uses: actions/checkout@v4
-
-  #     - name: Set up kubectl
-  #       uses: azure/setup-kubectl@v3
-  #       with:
-  #         version: 'latest'
-
-  #     - name: Configure kubeconfig
-  #       run: |
-  #         echo "${{ secrets.KUBECONFIG }}" > kubeconfig
-  #         export KUBECONFIG=kubeconfig
-
-  #     - name: Apply updated deployment
-  #       run: |
-  #         kubectl apply -f k8s/deployment.yaml -n production
-  #         kubectl rollout status deployment/my-app-deployment -n production
+          IMAGE_TAG: sha-${{ github.sha }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          REGISTRY: ghcr.io
+        run: |
+          # Define the new image with tag
+          NEW_IMAGE="${REGISTRY}/${GITHUB_REPOSITORY}:${IMAGE_TAG}"
+          
+          # Update the deployment file directly
+          sed -i "s|image: ${REGISTRY}/.*|image: ${NEW_IMAGE}|g" Deployment/frontend.yaml
+          sed -i "s#image: .*\$#image: ${{ secrets.DOCKER_USERNAME }}/campaign:${{ github.sha }}#g" Deployment/frontend.yaml
+          
+          # Verify the change
+          echo "Updated deployment to use image: ${NEW_IMAGE}"
+          grep -A 1 "image:" Deployment/frontend.yaml
+      
+      - name: Commit and push changes
+        run: |
+          git add Deployment/frontend.yaml
+          git commit -m "Update Kubernetes deployment with new image tag: ${{ needs.docker.outputs.image_tag }} [skip ci]" || echo "No changes to commit"
+          git push
