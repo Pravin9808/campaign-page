@@ -32,6 +32,7 @@ jobs:
       - name: Commit and push changes
         run: |
          cd prod-dep
-         kustomize edit set image ${{ secrets.DOCKER_USERNAME }}/campaign:${{ github.event.inputs.image_tag }}
+         sed -i "s#image: .*\$#image: ${{ secrets.DOCKER_USERNAME }}/campaign:${{ github.event.inputs.image_tag }}#g" prod-dep/frontend.yaml
+         git add prod-dep/frontend.yaml
          git commit -m "Promote image tag ${{ github.event.inputs.image_tag }} to prod"
          git push
