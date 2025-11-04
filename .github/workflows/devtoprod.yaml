@@ -31,7 +31,7 @@ jobs:
       
       - name: Commit and push changes
         run: |
-         cd prod-repo/app
+         cd prod-dep
          kustomize edit set image ${{ secrets.DOCKER_USERNAME }}/campaign:${{ github.event.inputs.image_tag }}
          git commit -m "Promote image tag ${{ github.event.inputs.image_tag }} to prod"
          git push
