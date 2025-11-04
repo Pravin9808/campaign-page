@@ -1,0 +1,53 @@
+name: Promote to Prod
+
+on:
+  workflow_dispatch:
+    inputs:
+      image_tag:
+        description: "Image tag to promote"
+        required: true
+
+env:
+  IMAGE_TAG: sha-${{ github.sha }}
+  GITHUB_REPOSITORY: ${{ github.repository }}
+  REGISTRY: ghcr.io
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.TOKEN }}
+      
+      - name: Setup Git config
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+
+      - name: Update Kubernetes deployment file
+        env:
+          IMAGE_TAG: sha-${{ github.sha }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          REGISTRY: ghcr.io
+        run: |
+          # Define the new image with tag
+          NEW_IMAGE="${REGISTRY}/${GITHUB_REPOSITORY}:${IMAGE_TAG}"
+          
+          # Update the deployment file directly
+          # sed -i "s|image: ${REGISTRY}/.*|image: ${NEW_IMAGE}|g" Deployment/frontend.yaml
+          sed -i "s#image: .*\$#image: ${{ secrets.DOCKER_USERNAME }}/campaign:${{ github.sha }}#g" Deployment/frontend.yaml
+          
+          # Verify the change
+          echo "Updated deployment to use image: ${NEW_IMAGE}"
+          grep -A 1 "image:" prod-dep/frontend.yaml
+      
+      - name: Commit and push changes
+        run: |
+          git add prod-dep/frontend.yaml
+          git commit -m "Update Kubernetes deployment with new image tag: ${{ needs.docker.outputs.image_tag }} [skip ci]" || echo "No changes to commit"
+          git push
