@@ -7,4 +7,6 @@ resources:
   - /deployment/secret.yaml
   - /deployment/frontend.yaml
   - /deployment/backend.yaml
+  - /deployment/webapp.yaml
+  - /deployment/hpawebapp.yaml
   
