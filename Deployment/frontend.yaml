@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: pravindevopsch/campaign:34686d1232238b099ca27049cd08bd96a87a6626
+          image: pravindevopsch/campaign:v0.0.1
           resources:
             requests:
               cpu: "100m"
