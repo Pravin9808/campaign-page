@@ -78,19 +78,30 @@ jobs:
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
+
+      - name: Get latest tag
+        id: tag
+        run: |
+          latest_tag=$(git tag --sort=-creatordate | head -n 1)
+          if [ -z "$latest_tag" ]; then latest_tag="v0.0.0"; fi
+          IFS='.' read -r major minor patch <<< "${latest_tag//v/}"
+          patch=$((patch+1))
+          echo "new_tag=v$major.$minor.$patch" >> $GITHUB_ENV
       
       - name: Update Kubernetes deployment file
         env:
-          IMAGE_TAG: sha-${{ github.sha }}
+          # IMAGE_TAG: sha-${{ github.sha }}
           GITHUB_REPOSITORY: ${{ github.repository }}
           REGISTRY: ghcr.io
         run: |
           # Define the new image with tag
+          IMAGE_TAG=${{ github.event.release.tag_name }}
           NEW_IMAGE="${REGISTRY}/${GITHUB_REPOSITORY}:${IMAGE_TAG}"
           
           # Update the deployment file directly
           # sed -i "s|image: ${REGISTRY}/.*|image: ${NEW_IMAGE}|g" Deployment/frontend.yaml
-          sed -i "s#image: .*\$#image: ${{ secrets.DOCKER_USERNAME }}/campaign:${{ github.sha }}#g" Deployment/frontend.yaml
+          # sed -i "s#image: .*\$#image: ${{ secrets.DOCKER_USERNAME }}/campaign:${{ github.sha }}#g" Deployment/frontend.yaml
+          sed -i "s#image: .*\$#image: ${{ secrets.DOCKER_USERNAME }}/campaign:${{ env.new_tag }}#g" Deployment/frontend.yaml
           
           # Verify the change
           echo "Updated deployment to use image: ${NEW_IMAGE}"
@@ -99,5 +110,7 @@ jobs:
       - name: Commit and push changes
         run: |
           git add Deployment/frontend.yaml
-          git commit -m "Update Kubernetes deployment with new image tag: ${{ needs.docker.outputs.image_tag }} [skip ci]" || echo "No changes to commit"
+          git tag -a ${{ env.new_tag }} -m "Auto-incremented tag ${{ env.new_tag }}"
+          git push origin ${{ env.new_tag }}
+          git commit -m "Update Kubernetes deployment with new image tag: ${{ needs.docker.outputs.image_tag }}" || echo "No changes to commit"
           git push

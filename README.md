@@ -1,0 +1,1 @@
+[![SonarQube, Docker Build & K8s YAML Update](https://github.com/Pravin9808/campaign-page/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/Pravin9808/campaign-page/actions/workflows/main.yml)
