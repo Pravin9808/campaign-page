@@ -23,7 +23,7 @@ COPY --from=builder /app/public ./public
 COPY package*.json ./
 
 # Install only production dependencies
-RUN npm ci --omit=dev --legacy-peer-deps
+# RUN npm ci --omit=dev --legacy-peer-deps
 
 EXPOSE 3000
 CMD ["npm", "start"]
