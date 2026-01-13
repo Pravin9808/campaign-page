@@ -1,5 +1,8 @@
 [![SonarQube, Docker Build & K8s YAML Update](https://github.com/Pravin9808/campaign-page/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/Pravin9808/campaign-page/actions/workflows/main.yml)
 
+
+![ChatGPT Image Jan 13, 2026, 10_01_24 PM](https://github.com/user-attachments/assets/414f74ef-6b25-4094-a6a4-46ab982dbdb2)
+
 🚀 Next.js Application
 CI/CD • Docker • Kubernetes
 
