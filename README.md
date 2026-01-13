@@ -1,63 +1,62 @@
 [![SonarQube, Docker Build & K8s YAML Update](https://github.com/Pravin9808/campaign-page/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/Pravin9808/campaign-page/actions/workflows/main.yml)
-🚀 Next.js Application – CI/CD & Kubernetes Deployment
 
-This repository contains a Next.js web application with a complete Dev → Prod CI/CD pipeline, containerization using Docker, and deployment to Kubernetes using Kustomize.
-It supports both GitHub Actions and Jenkins–based pipelines.
+🚀 Next.js Application
+CI/CD • Docker • Kubernetes
 
-📂 Project Structure
+This repository contains a Next.js web application with a complete Dev to Prod CI/CD pipeline, containerized using Docker and deployed on Kubernetes using Kustomize.
+
+Both GitHub Actions and Jenkins pipelines are supported.
+
+📁 Repository Structure
 .
 ├── .github/workflows/
-│   ├── devtoprod.yaml        # GitHub Actions pipeline (Dev → Prod)
-│   └── main.yml              # Main CI workflow
+│   ├── devtoprod.yaml
+│   └── main.yml
 │
-├── Deployment/               # Kubernetes deployment manifests
-├── Pipeline/                 # CI/CD pipeline-related configs/scripts
-├── app/                      # Next.js App Router source code
-├── prod-dep/                 # Production-specific deployment configs
-├── public/                   # Static assets
+├── Deployment/
+├── Pipeline/
+├── app/
+├── prod-dep/
+├── public/
 │
-├── .dockerignore             # Docker ignore rules
-├── .gitignore                # Git ignore rules
-├── Dockerfile                # Docker image definition
-├── Jenkinsfile               # Jenkins CI/CD pipeline
-├── kustomization.yaml        # Kustomize configuration
+├── .dockerignore
+├── .gitignore
+├── Dockerfile
+├── Jenkinsfile
+├── kustomization.yaml
 │
-├── eslint.config.mjs         # ESLint configuration
-├── jsconfig.json             # JavaScript path aliases & config
-├── next.config.mjs           # Next.js configuration
-├── postcss.config.mjs        # PostCSS configuration
+├── eslint.config.mjs
+├── jsconfig.json
+├── next.config.mjs
+├── postcss.config.mjs
 │
-├── package.json              # Project dependencies & scripts
-├── package-lock.json         # Dependency lock file
-└── README.md                 # Project documentation
+├── package.json
+├── package-lock.json
+└── README.md
 
-🛠️ Tech Stack
+🧰 Technology Stack
 
-Frontend: Next.js (React)
+Frontend : Next.js (React)
 
-Language: JavaScript
+Language : JavaScript
 
-Containerization: Docker
+CI/CD : GitHub Actions, Jenkins
 
-CI/CD:
+Containerization : Docker
 
-GitHub Actions
+Orchestration : Kubernetes
 
-Jenkins (Declarative Pipeline)
+Config Management : Kustomize
 
-Orchestration: Kubernetes
+Code Quality : ESLint
 
-Config Management: Kustomize
+Styling : PostCSS
 
-Linting: ESLint
-
-Styling: PostCSS
-
-⚙️ Local Development
-1️⃣ Install Dependencies
+⚙️ Local Setup
+Install Dependencies
 npm install
 
-2️⃣ Run Development Server
+Start Development Server
 npm run dev
 
 
@@ -68,28 +67,65 @@ http://localhost:3000
 🧪 Linting
 npm run lint
 
-🐳 Docker
+🐳 Docker Usage
 Build Docker Image
 docker build -t nextjs-app .
 
-Run Container
+Run Docker Container
 docker run -p 3000:3000 nextjs-app
 
 🔁 CI/CD Pipelines
-🔹 GitHub Actions
+GitHub Actions
 
-Located in .github/workflows/
+Workflows are defined under:
 
-main.yml – CI workflow (build, test, lint)
+.github/workflows/
 
-devtoprod.yaml – Dev → Prod promotion pipeline
 
-Typical flow:
+main.yml
 
-Code push / PR
+Code checkout
 
-Build & test
+Install dependencies
+
+Build and lint
+
+devtoprod.yaml
+
+Dev to Prod promotion
 
 Docker image build
 
-Deployment to Kubernetes
+Kubernetes deployment
+
+Jenkins Pipeline
+
+The Jenkins pipeline is defined in:
+
+Jenkinsfile
+
+
+Pipeline stages include:
+
+Install dependencies
+
+Build application
+
+Docker image creation
+
+Kubernetes deployment
+
+☸️ Kubernetes Deployment
+
+Kubernetes manifests are managed using Kustomize.
+
+Configuration Locations
+
+Base config: kustomization.yaml
+
+Deployment manifests: Deployment/
+
+Production overrides: prod-dep/
+
+Apply Deployment
+kubectl apply -k .
