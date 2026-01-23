@@ -3,7 +3,7 @@ FROM node:slim AS deps
 WORKDIR /app
 COPY package*.json ./
 # install dependencies with frozen lockfile for reproducible builds
-RUN npm ci
+RUN npm install
 
 # ---- Build stage ----
 FROM node:slim AS builder
