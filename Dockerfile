@@ -21,8 +21,6 @@ COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
 COPY --from=builder /app/public ./public
 
-# Install only production deps listed in the standalone package.json
-# (the standalone folder includes a minimal package.json)
 COPY --from=builder /app/.next/standalone/package.json ./package.json
 RUN npm install --production --omit=dev
 
