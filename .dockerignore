@@ -1,9 +1,21 @@
+# Node & build outputs
 node_modules
-npm-debug.log
-Dockerfile
-.dockerignore
+.next
+/build
+dist
+
+# Git + OS cruft
 .git
 .gitignore
-.next/cache
-.env
+.DS_Store
 .vscode
+.env
+npm-debug.log
+yarn-error.log
+
+# Docker files (optional)
+Dockerfile*
+docker-compose*.yml
+
+# Other
+coverage
