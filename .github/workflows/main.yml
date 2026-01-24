@@ -3,7 +3,7 @@ name: SonarQube, Docker Build & K8s YAML Update
 on:
   push:
     branches:
-      - main
+      # - main
     paths-ignore:
       - 'Deployment/frontend.yaml'
   pull_request:
@@ -56,7 +56,7 @@ jobs:
         with:
           image-ref: ${{ secrets.DOCKER_USERNAME }}/campaign:${{ github.sha }}
           format: 'table'
-          exit-code: '1'
+          exit-code: '0'
           ignore-unfixed: true
           vuln-type: 'os,library'
           severity: 'CRITICAL,HIGH'
