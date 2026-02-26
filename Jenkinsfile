@@ -6,7 +6,7 @@ pipeline {
         GITHUB_CREDENTIALS = 'github-token'
         DOCKERHUB_CREDENTIALS = 'dockerhub-credential'
         REPO_URL = 'https://github.com/Pravin9808/campaign-page.git'
-        SONARQUBE_AUTH_TOKEN = credentials('sonarqube')
+        SONARQUBE_AUTH_TOKEN = credentials('sonarqube') 
     }
 
     stages {
